@@ -30,6 +30,6 @@ public class IssuesRegister extends IssueRegistry {
 
     @Override
     public int getApi() {
-        return ApiKt.CURRENT_API;
+        return 1;
     }
 }

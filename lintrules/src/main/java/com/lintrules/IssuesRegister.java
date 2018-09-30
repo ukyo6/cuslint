@@ -3,6 +3,7 @@ package com.lintrules;
 import com.android.tools.lint.client.api.IssueRegistry;
 import com.android.tools.lint.detector.api.ApiKt;
 import com.android.tools.lint.detector.api.Issue;
+import com.lintrules.detectors.MessageObtainDetector;
 import com.lintrules.detectors.MyToastDetector;
 import com.lintrules.detectors.NewThreadDetector;
 import com.lintrules.detectors.SelfLogDetector;
@@ -17,15 +18,13 @@ public class IssuesRegister extends IssueRegistry {
     @NotNull
     @Override
     public List<Issue> getIssues() {
-        System.out.println("==== my lint startaaa ====");
+        System.out.println("==== my lint start ====");
 
-        return Arrays.asList(SelfLogDetector.ISSUE
-        ,NewThreadDetector.ISSUE, MyToastDetector.ISSUE);
-
-//        return new ArrayList<Issue>() {{
-//            add(SelfLogDetector.ISSUE);
-//            add(NewThreadDetector.ISSUE);
-//        }};
+        return new ArrayList<Issue>() {{
+            add(SelfLogDetector.ISSUE);
+            add(NewThreadDetector.ISSUE);
+            add(MessageObtainDetector.ISSUE);
+        }};
     }
 
     @Override

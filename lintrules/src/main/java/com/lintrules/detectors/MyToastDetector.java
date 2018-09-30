@@ -17,6 +17,7 @@
 package com.lintrules.detectors;
 
 import com.android.annotations.NonNull;
+import com.android.tools.lint.checks.ToastDetector;
 import com.android.tools.lint.detector.api.Category;
 import com.android.tools.lint.detector.api.Detector;
 import com.android.tools.lint.detector.api.Implementation;
@@ -45,7 +46,7 @@ import java.util.List;
 import static com.android.tools.lint.detector.api.LintUtils.getMethodName;
 
 /** Detector looking for Toast.makeText() without a corresponding show() call */
-public class MyToastDetector extends Detector implements SourceCodeScanner {
+public class MyToastDetector extends ToastDetector implements SourceCodeScanner {
     /** The main issue discovered by this detector */
     public static final Issue ISSUE = Issue.create(
             "ShowToast",

@@ -1,1 +1,1 @@
-include ':app', ':lintrules', ':lintaar'
+include ':app', ':lintrules'

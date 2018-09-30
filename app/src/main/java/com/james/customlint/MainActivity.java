@@ -1,12 +1,9 @@
 package com.james.customlint;
 
-import android.arch.core.executor.DefaultTaskExecutor;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-
-import com.lintrules.detectors.NewThreadDetector;
-import com.lintrules.detectors.SelfLogDetector;
+import android.widget.Toast;
 
 
 /**
@@ -22,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Log.e("1","111");
+        Toast.makeText(this,"11",Toast.LENGTH_SHORT);
 
         new Thread().run();
     }

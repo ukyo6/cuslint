@@ -17,12 +17,20 @@ android {
         }
     }
 
-    // 配置assemble任务依赖lint，编译时就会执行Lint检查
-    android.applicationVariants.all { variant ->
-        variant.outputs.each { output ->
-            def lintTask = tasks["lint${variant.name.capitalize()}"]
-            output.assemble.dependsOn lintTask
+    repositories {
+        flatDir {
+            dirs 'libs'
         }
+    }
+}
+
+
+
+// 配置assemble任务依赖lint，编译时就会执行Lint检查
+android.applicationVariants.all { variant ->
+    variant.outputs.each { output ->
+        def lintTask = tasks["lint${variant.name.capitalize()}"]
+        output.assemble.dependsOn lintTask
     }
 }
 
@@ -33,6 +41,9 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
-    api project(':lintaar')
-    implementation files('libs/lint.jar')
+//    implementation project(':lint_aar')
+//    implementation(name:'mylint',ext:'aar')
+
+    lintChecks project(':lintrules')
+
 }

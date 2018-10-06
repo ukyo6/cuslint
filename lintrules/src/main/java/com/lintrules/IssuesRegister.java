@@ -19,6 +19,7 @@ public class IssuesRegister extends IssueRegistry {
     @Override
     public List<Issue> getIssues() {
         System.out.println("==== my lint start ====");
+        System.out.println("api=" + getApi() + ",minApi=" + getMinApi()+",CurrentApi="+ ApiKt.CURRENT_API);
 
         return new ArrayList<Issue>() {{
             add(SelfLogDetector.ISSUE);
@@ -29,6 +30,11 @@ public class IssuesRegister extends IssueRegistry {
 
     @Override
     public int getApi() {
+        return ApiKt.CURRENT_API;
+    }
+
+    @Override
+    public int getMinApi() {
         return 1;
     }
 }

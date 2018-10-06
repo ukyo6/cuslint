@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 
 /**
  * Log、System.out.println打印必须为工程中自定义的AppLog检查(这个因项目而异)
@@ -26,5 +28,6 @@ public class MainActivity extends AppCompatActivity {
         Log.d("1","222");
 
         new Message();
+
     }
 }

@@ -2,11 +2,16 @@ package com.lintrules;
 
 import com.android.tools.lint.client.api.IssueRegistry;
 import com.android.tools.lint.detector.api.ApiKt;
+import com.android.tools.lint.detector.api.Category;
+import com.android.tools.lint.detector.api.Implementation;
 import com.android.tools.lint.detector.api.Issue;
+import com.android.tools.lint.detector.api.Scope;
+import com.android.tools.lint.detector.api.Severity;
 import com.lintrules.detectors.MessageObtainDetector;
 import com.lintrules.detectors.MyToastDetector;
 import com.lintrules.detectors.NewThreadDetector;
 import com.lintrules.detectors.SelfLogDetector;
+import com.lintrules.detectors.ViewIdNameDetector;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -15,6 +20,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class IssuesRegister extends IssueRegistry {
+
     @NotNull
     @Override
     public List<Issue> getIssues() {
@@ -25,6 +31,7 @@ public class IssuesRegister extends IssueRegistry {
             add(SelfLogDetector.ISSUE);
             add(NewThreadDetector.ISSUE);
             add(MessageObtainDetector.ISSUE);
+            add(ViewIdNameDetector.ISSUE);
         }};
     }
 
@@ -33,8 +40,4 @@ public class IssuesRegister extends IssueRegistry {
         return ApiKt.CURRENT_API;
     }
 
-    @Override
-    public int getMinApi() {
-        return 1;
-    }
 }

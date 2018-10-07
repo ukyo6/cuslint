@@ -26,16 +26,13 @@ public class MessageObtainDetector extends Detector implements Detector.UastScan
     private static final Class<? extends Detector> DETECTOR_CLASS = MessageObtainDetector.class;
     private static final EnumSet<Scope> DETECTOR_SCOPE = Scope.JAVA_FILE_SCOPE;
 
-    private static final int ISSUE_PRIORITY = 9;
-    private static final Severity ISSUE_SEVERITY = Severity.WARNING;
-
     public static final Issue ISSUE = Issue.create(
             "MessageObtainUseError",
             "不建议直接new Message()",
             "建议调用{handler.obtainMessage} or {Message.Obtain()}获取缓存的message",
             Category.CORRECTNESS,
-            ISSUE_PRIORITY,
-            ISSUE_SEVERITY,
+            9,
+            Severity.WARNING,
             new Implementation(DETECTOR_CLASS, DETECTOR_SCOPE)
     );
 

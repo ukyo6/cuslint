@@ -4,9 +4,8 @@ import android.os.Bundle;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
-
-import java.util.ArrayList;
 
 
 /**
@@ -16,10 +15,16 @@ import java.util.ArrayList;
  */
 public class MainActivity extends AppCompatActivity {
 
+    TextView tv_hana;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        this.setContentView(R.layout.activity_main);
+
+        Test.setContentView(R.layout.activity_main);
+
+        tv_hana = new TextView(this);
 
         Toast.makeText(this,"11",Toast.LENGTH_SHORT);
 

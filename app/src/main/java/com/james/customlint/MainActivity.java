@@ -20,9 +20,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.setContentView(R.layout.activity_main);
+        this.setContentView(R.layout.act_main);
 
-        Test.setContentView(R.layout.activity_main);
+        Test.setContentView(R.layout.act_main); //测试是否在lint的检测范围
 
         tv_hana = new TextView(this);
 

@@ -27,7 +27,8 @@ public class IssuesRegister extends IssueRegistry {
             add(NewThreadDetector.ISSUE);
             add(MessageObtainDetector.ISSUE);
             add(ViewIdCorrectnessDetector.ISSUE);
-            add(LayoutNameDetector.ISSUE);
+            add(LayoutNameDetector.ACTIVITY_LAYOUT_NAME_ISSUE);
+            add(LayoutNameDetector.FRAGMENT_LAYOUT_NAME_ISSUE);
         }};
     }
 

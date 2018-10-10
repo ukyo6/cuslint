@@ -38,7 +38,7 @@ public class ViewIdCorrectnessDetector extends LayoutDetector implements SourceC
     public static final Issue ISSUE = Issue.create(
             "ViewIdName",
             "ViewId命名不规范",
-            "ViewIdName建议使用 view的缩写_xxx,例如tv_username",
+            "ViewIdName建议使用 view的缩写加上_xxx,例如tv_username",
             Category.CORRECTNESS, 5, Severity.ERROR,
             new Implementation(ViewIdCorrectnessDetector.class, Scope.RESOURCE_FILE_SCOPE));
 
@@ -63,32 +63,35 @@ public class ViewIdCorrectnessDetector extends LayoutDetector implements SourceC
         if (value.startsWith(NEW_ID_PREFIX)) {
             String idValue = value.substring(NEW_ID_PREFIX.length());
             boolean right = true;
-            String expMsg;
+            String expMsg = "";
             switch (element.getTagName()) {
                 case TEXT_VIEW:
-                    expMsg = "tv_";
+                    expMsg = "tv";
                     right = idValue.startsWith(expMsg);
                     break;
                 case IMAGE_VIEW:
-                    expMsg = "iv_";
+                    expMsg = "iv";
                     right = idValue.startsWith(expMsg);
                     break;
                 case BUTTON:
-                    expMsg = "btn_";
+                    expMsg = "btn";
                     right = idValue.startsWith(expMsg);
                     break;
                 case EDIT_TEXT:
-                    expMsg = "et_";
+                    expMsg = "et";
                     right = idValue.startsWith(expMsg);
                     break;
                 case CHECK_BOX:
-                    expMsg = "cb_";
+                    expMsg = "cb";
                     right = idValue.startsWith(expMsg);
                     break;
             }
 
             if(!right) {
-                context.report(ISSUE, attr, context.getLocation(attr), "ViewIdName建议使用 view的缩写_xxx,例如tv_username");
+                context.report(ISSUE, attr, context.getLocation(attr),
+                        String.format(
+                                "ViewIdName建议使用 view的缩写_xxx; 建议使用 `%1$s_xxx`",
+                                expMsg));
             }
         }
     }

@@ -37,4 +37,8 @@ public class IssuesRegister extends IssueRegistry {
         return ApiKt.CURRENT_API;
     }
 
+    @Override
+    public int getMinApi() {
+        return 1;
+    }
 }

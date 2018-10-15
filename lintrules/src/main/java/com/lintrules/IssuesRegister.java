@@ -7,6 +7,7 @@ import com.lintrules.detectors.LayoutNameDetector;
 import com.lintrules.detectors.MessageObtainDetector;
 import com.lintrules.detectors.NewThreadDetector;
 import com.lintrules.detectors.SelfLogDetector;
+import com.lintrules.detectors.SerializableDetector;
 import com.lintrules.detectors.ViewIdCorrectnessDetector;
 
 import org.jetbrains.annotations.NotNull;
@@ -29,6 +30,7 @@ public class IssuesRegister extends IssueRegistry {
             add(ViewIdCorrectnessDetector.ISSUE);
             add(LayoutNameDetector.ACTIVITY_LAYOUT_NAME_ISSUE);
             add(LayoutNameDetector.FRAGMENT_LAYOUT_NAME_ISSUE);
+            add(SerializableDetector.ISSUE);
         }};
     }
 

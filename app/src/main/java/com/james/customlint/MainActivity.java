@@ -10,9 +10,10 @@ import android.widget.Toast;
 
 
 /**
- * Log、System.out.println打印必须为工程中自定义的AppLog检查(这个因项目而异)
+ * Log打印必须为工程中自定义的AppLog检查(这个因项目而异)
  * 检测new Message,提醒使用Message.Obtain()/handler.obtainMessage
  * newThread检查,推荐用封装好的线程池
+ * layoutId命名检查
  */
 public class MainActivity extends AppCompatActivity {
 

@@ -9,10 +9,14 @@ import com.android.tools.lint.detector.api.JavaContext;
 import com.android.tools.lint.detector.api.Scope;
 import com.android.tools.lint.detector.api.Severity;
 import com.android.tools.lint.detector.api.XmlContext;
+import com.intellij.psi.PsiClassType;
+import com.intellij.psi.PsiReferenceList;
+import com.intellij.psi.PsiType;
 
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.uast.UAnonymousClass;
 import org.jetbrains.uast.UClass;
+import org.jetbrains.uast.UTypeReferenceExpression;
 import org.w3c.dom.Element;
 
 import java.util.Collection;
@@ -25,12 +29,12 @@ import java.util.List;
  */
 public class SerializableDetector extends Detector implements Detector.UastScanner {
 
-    public static final String CLASS_SERIALIZABLE = "java.io.Serializable";
+    private static final String CLASS_SERIALIZABLE = "java.io.Serializable";
 
     public static final Issue ISSUE = Issue.create(
-            "SerializableImpl",
-            "SerializableImpl",
-            "SerializableImpl",
+            "InnerClassSerializable",
+            "内部类需要实现Serializable接口",
+            "内部类需要实现Serializable接口",
             Category.SECURITY, 5, Severity.ERROR,
             new Implementation(SerializableDetector.class, Scope.JAVA_FILE_SCOPE));
 
@@ -40,16 +44,34 @@ public class SerializableDetector extends Detector implements Detector.UastScann
         return Collections.singletonList(CLASS_SERIALIZABLE);
     }
 
-
     @Override
     public void visitClass(JavaContext context, UClass declaration) {
-        if (declaration instanceof UAnonymousClass) { //只从外部开始检查,内部类忽略
+        if (declaration instanceof UAnonymousClass) { //只从最外部开始检查
             return;
         }
 
-        declaration.getImplementsListTypes()[0].getClassName();
+        sortClass(context, declaration);
+    }
+
+    private void sortClass(JavaContext context, UClass declaration) {
         for (UClass uClass : declaration.getInnerClasses()) {
-            UClass superClass = uClass.getSuperClass();
+            sortClass(context,uClass);
+
+            //判断是否继承了Serializable并提示
+            boolean hasImpled = false;
+            for (PsiClassType psiClassType : uClass.getImplementsListTypes()) {
+                if(CLASS_SERIALIZABLE.equals(psiClassType.getCanonicalText())) {
+                    hasImpled = true;
+                    break;
+                }
+            }
+            if(!hasImpled) {
+                context.report(ISSUE, uClass.getNameIdentifier(), context.getLocation(uClass.getNameIdentifier()),
+                        String.format(
+                                "内部类 `%1$s` 需要实现Serializable接口",
+                                uClass.getName()));
+            }
+
         }
     }
 }

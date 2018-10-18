@@ -31,7 +31,7 @@ import static com.android.SdkConstants.TOGGLE_BUTTON;
  * @desc ViewIdName的命名建议使用 view的缩写_xxx,例如tv_username
  *
  */
-public class ViewIdCorrectnessDetector extends LayoutDetector implements SourceCodeScanner {
+public class ViewIdCorrectnessDetector extends LayoutDetector {
 
     private static final String ATTR_ID = "id";
 
@@ -45,7 +45,7 @@ public class ViewIdCorrectnessDetector extends LayoutDetector implements SourceC
 
     @Override
     public Collection<String> getApplicableElements() {
-        return Arrays.asList(
+        return Arrays.asList(  //指定检查这几个控件的命名规范,可自行扩展
                 TEXT_VIEW,
                 IMAGE_VIEW,
                 BUTTON,
@@ -56,6 +56,7 @@ public class ViewIdCorrectnessDetector extends LayoutDetector implements SourceC
 
     @Override
     public void visitElement(XmlContext context, Element element) {
+        //这个detector只扫描android:id属性,其他属性跳过
         if (!element.hasAttributeNS(ANDROID_URI, ATTR_ID)) return;
 
         Attr attr = element.getAttributeNodeNS(ANDROID_URI, ATTR_ID);

@@ -40,7 +40,7 @@ public class IssuesRegister extends IssueRegistry {
     }
 
     @Override
-    public int getMinApi() {
+    public int getMinApi() {  //兼容3.1
         return 1;
     }
 }

@@ -41,35 +41,39 @@ public class SerializableDetector extends Detector implements Detector.UastScann
     @Nullable
     @Override
     public List<String> applicableSuperClasses() {
+        //父类是"java.io.Serializable"
         return Collections.singletonList(CLASS_SERIALIZABLE);
     }
 
+    /**
+     * 扫描到applicableSuperClasses()指定的list时,回调该方法
+     */
     @Override
     public void visitClass(JavaContext context, UClass declaration) {
-        if (declaration instanceof UAnonymousClass) { //只从最外部开始检查
+        //只从最外部开始向内部类递归检查
+        if (declaration instanceof UAnonymousClass) {
             return;
         }
-
         sortClass(context, declaration);
     }
 
     private void sortClass(JavaContext context, UClass declaration) {
         for (UClass uClass : declaration.getInnerClasses()) {
-            sortClass(context,uClass);
+            sortClass(context, uClass);
 
             //判断是否继承了Serializable并提示
             boolean hasImpled = false;
             for (PsiClassType psiClassType : uClass.getImplementsListTypes()) {
-                if(CLASS_SERIALIZABLE.equals(psiClassType.getCanonicalText())) {
+                if (CLASS_SERIALIZABLE.equals(psiClassType.getCanonicalText())) {
                     hasImpled = true;
                     break;
                 }
             }
-            if(!hasImpled) {
-                context.report(ISSUE, uClass.getNameIdentifier(), context.getLocation(uClass.getNameIdentifier()),
-                        String.format(
-                                "内部类 `%1$s` 需要实现Serializable接口",
-                                uClass.getName()));
+            if (!hasImpled) {
+                context.report(ISSUE,
+                        uClass.getNameIdentifier(),
+                        context.getLocation(uClass.getNameIdentifier()),
+                        String.format("内部类 `%1$s` 需要实现Serializable接口", uClass.getName()));
             }
 
         }

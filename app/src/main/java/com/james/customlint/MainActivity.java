@@ -2,11 +2,8 @@ package com.james.customlint;
 
 import android.os.Bundle;
 import android.os.Message;
-import android.support.annotation.LayoutRes;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.TextView;
-import android.widget.Toast;
 
 
 /**
@@ -17,9 +14,6 @@ import android.widget.Toast;
  */
 public class MainActivity extends AppCompatActivity {
 
-    TextView tv_hana;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,10 +21,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setContentView(R.layout.act_main);
         Test.setContentView(R.layout.act_main); //测试是否在lint的检测范围
-
-        tv_hana = new TextView(this);
-
-        Toast.makeText(this,"11",Toast.LENGTH_SHORT);
 
         new Thread().run();
 

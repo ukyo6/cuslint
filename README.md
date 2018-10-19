@@ -1,4 +1,4 @@
-## 参考 https://www.jianshu.com/p/2115b4fbe858
+## 详细介绍 https://www.jianshu.com/p/2115b4fbe858
 
 # 使用方法
 

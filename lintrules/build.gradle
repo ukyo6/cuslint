@@ -1,0 +1,24 @@
+apply plugin: 'java'
+
+dependencies {
+    compileOnly 'com.android.tools.lint:lint-api:26.2.0'
+    compileOnly 'com.android.tools.lint:lint-checks:26.2.0'
+}
+
+jar {
+    manifest {
+        attributes("Lint-Registry-v2": "com.lintrules.IssuesRegister")
+    }
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
+
+//configurations {
+//    lintJarOutput
+//}
+//
+//dependencies {
+//    lintJarOutput files(jar)
+//}

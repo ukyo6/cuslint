@@ -1,7 +1,6 @@
 package com.lintrules.detectors;
 
 import com.android.annotations.NonNull;
-import com.android.tools.lint.client.api.JavaParser;
 import com.android.tools.lint.detector.api.Category;
 import com.android.tools.lint.detector.api.Detector;
 import com.android.tools.lint.detector.api.Implementation;
@@ -9,29 +8,27 @@ import com.android.tools.lint.detector.api.Issue;
 import com.android.tools.lint.detector.api.JavaContext;
 import com.android.tools.lint.detector.api.Scope;
 import com.android.tools.lint.detector.api.Severity;
+import com.android.tools.lint.detector.api.SourceCodeScanner;
 import com.intellij.lang.jvm.JvmAnnotation;
 import com.intellij.lang.jvm.JvmParameter;
-import com.intellij.psi.PsiAnnotation;
-import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiMethod;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.uast.UCallExpression;
 import org.jetbrains.uast.UElement;
 import org.jetbrains.uast.UExpression;
-import org.jetbrains.uast.UMethod;
 import org.jetbrains.uast.java.JavaUMethod;
 
 import java.util.Arrays;
-import java.util.EnumSet;
-import java.util.Iterator;
 import java.util.List;
 
 /**
  * @author hewei
  * @desc layoutId命名检查
  */
-public class LayoutNameDetector extends Detector implements Detector.UastScanner {
+@SuppressWarnings("UnstableApiUsage")
+public class LayoutNameDetector extends Detector implements SourceCodeScanner {
 
     private static final Class<? extends Detector> DETECTOR_CLASS = LayoutNameDetector.class;
 
@@ -62,7 +59,7 @@ public class LayoutNameDetector extends Detector implements Detector.UastScanner
 
 
     @Override
-    public void visitMethod(JavaContext context, UCallExpression node, PsiMethod method) {
+    public void visitMethod(@NotNull JavaContext context, @NotNull UCallExpression node, PsiMethod method) {
         String name = method.getName();
 
         if ("setContentView".equals(name)) {

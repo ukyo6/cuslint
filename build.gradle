@@ -5,9 +5,13 @@ buildscript {
     repositories {
         google()
         jcenter()
+        maven {
+            url "http://192.168.19.51:8081/repository/inner-release/"
+        }
+
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.2'
+        classpath 'com.android.tools.build:gradle:4.0.1'
         
 
         // NOTE: Do not place your application dependencies here; they belong
@@ -19,6 +23,10 @@ allprojects {
     repositories {
         google()
         jcenter()
+        maven {
+            url "http://192.168.19.51:8081/repository/inner-release/"
+        }
+
     }
 }
 

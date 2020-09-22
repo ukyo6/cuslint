@@ -21,6 +21,7 @@ import java.util.List;
  * @desc message.obtain()会去消息池取缓存的message,减少new Message()带来的开销
  *
  */
+@SuppressWarnings("UnstableApiUsage")
 public class MessageObtainDetector extends Detector implements Detector.UastScanner {
 
     private static final Class<? extends Detector> DETECTOR_CLASS = MessageObtainDetector.class;

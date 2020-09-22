@@ -13,6 +13,7 @@ import com.intellij.psi.PsiClassType;
 import com.intellij.psi.PsiReferenceList;
 import com.intellij.psi.PsiType;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.uast.UAnonymousClass;
 import org.jetbrains.uast.UClass;
@@ -27,6 +28,7 @@ import java.util.List;
  * @author hewei
  * @desc 序列化内部类检查
  */
+@SuppressWarnings("UnstableApiUsage")
 public class SerializableDetector extends Detector implements Detector.UastScanner {
 
     private static final String CLASS_SERIALIZABLE = "java.io.Serializable";
@@ -49,7 +51,7 @@ public class SerializableDetector extends Detector implements Detector.UastScann
      * 扫描到applicableSuperClasses()指定的list时,回调该方法
      */
     @Override
-    public void visitClass(JavaContext context, UClass declaration) {
+    public void visitClass(@NotNull JavaContext context, @NotNull UClass declaration) {
         //只从最外部开始向内部类递归检查
         if (declaration instanceof UAnonymousClass) {
             return;

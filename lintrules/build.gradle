@@ -1,8 +1,9 @@
 apply plugin: 'java'
+apply plugin: 'maven'
 
 dependencies {
-    compileOnly 'com.android.tools.lint:lint-api:26.2.0'
-    compileOnly 'com.android.tools.lint:lint-checks:26.2.0'
+    compileOnly 'com.android.tools.lint:lint-api:27.0.1'
+    compileOnly 'com.android.tools.lint:lint-checks:27.0.1'
 }
 
 jar {
@@ -13,6 +14,27 @@ jar {
 
 tasks.withType(JavaCompile) {
     options.encoding = "UTF-8"
+}
+
+//上传到仓库：http://192.168.19.51:8081/repository/inner-release/
+group = 'com.intsig.camscanner'
+uploadArchives {
+    configuration = configurations.archives
+    repositories.mavenDeployer {
+        repository(url: 'http://192.168.19.51:8081/repository/inner-release/') {//仓库地址
+            authentication(userName: "jesse_li",//用户名
+                    password: "android")//密码
+        }
+
+        pom.project {
+            name 'customLint'
+            packaging 'aar'
+            description 'first version'
+            url 'http://192.168.19.51:8081/repository/inner-release/'//仓库地址
+            artifactId 'customLint'
+            version '1.0.0'
+        }
+    }
 }
 
 //configurations {

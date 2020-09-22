@@ -3,6 +3,7 @@ package com.lintrules;
 import com.android.tools.lint.client.api.IssueRegistry;
 import com.android.tools.lint.detector.api.ApiKt;
 import com.android.tools.lint.detector.api.Issue;
+import com.lintrules.detectors.CsSvgDetector;
 import com.lintrules.detectors.LayoutNameDetector;
 import com.lintrules.detectors.MessageObtainDetector;
 import com.lintrules.detectors.NewThreadDetector;
@@ -25,12 +26,13 @@ public class IssuesRegister extends IssueRegistry {
 
         return new ArrayList<Issue>() {{
             add(SelfLogDetector.ISSUE);
-            add(NewThreadDetector.ISSUE);
+            add(NewThreadDetector.ISSUE_NEW_THREAD);
             add(MessageObtainDetector.ISSUE);
             add(ViewIdCorrectnessDetector.ISSUE);
             add(LayoutNameDetector.ACTIVITY_LAYOUT_NAME_ISSUE);
             add(LayoutNameDetector.FRAGMENT_LAYOUT_NAME_ISSUE);
             add(SerializableDetector.ISSUE);
+            add(CsSvgDetector.ISSUE);
         }};
     }
 

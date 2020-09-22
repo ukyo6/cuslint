@@ -9,13 +9,17 @@ import com.android.tools.lint.detector.api.Severity;
 import com.android.tools.lint.detector.api.SourceCodeScanner;
 import com.android.tools.lint.detector.api.XmlContext;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 
 import static com.android.SdkConstants.ANDROID_URI;
+import static com.android.SdkConstants.ATTR_ID;
 import static com.android.SdkConstants.BUTTON;
 import static com.android.SdkConstants.CHECKED_TEXT_VIEW;
 import static com.android.SdkConstants.CHECK_BOX;
@@ -31,21 +35,26 @@ import static com.android.SdkConstants.TOGGLE_BUTTON;
  * @desc ViewIdName的命名建议使用 view的缩写_xxx,例如tv_username
  *
  */
+@SuppressWarnings("UnstableApiUsage")
 public class ViewIdCorrectnessDetector extends LayoutDetector {
 
     private static final String ATTR_ID = "id";
 
+    public static final Implementation IMPLEMENTATION = new Implementation(ViewIdCorrectnessDetector.class, Scope.RESOURCE_FILE_SCOPE);
+
     public static final Issue ISSUE = Issue.create(
-            "ViewIdName",
+            "ViewIdCorrectness",
             "ViewId命名不规范",
-            "ViewIdName建议使用 view的缩写加上_xxx,例如tv_username",
-            Category.CORRECTNESS, 5, Severity.ERROR,
-            new Implementation(ViewIdCorrectnessDetector.class, Scope.RESOURCE_FILE_SCOPE));
+            "ViewIdName建议使用 view的缩写加上_xxx,例如tv_xxx, iv_xxx",
+            Category.CORRECTNESS,
+            5,
+            Severity.ERROR,
+            IMPLEMENTATION);
 
 
     @Override
     public Collection<String> getApplicableElements() {
-        return Arrays.asList(  //指定检查这几个控件的命名规范,可自行扩展
+        return Arrays.asList(
                 TEXT_VIEW,
                 IMAGE_VIEW,
                 BUTTON,
@@ -53,9 +62,15 @@ public class ViewIdCorrectnessDetector extends LayoutDetector {
                 CHECK_BOX
         );
     }
+//
+//    @Nullable
+//    @Override
+//    public Collection<String> getApplicableAttributes() {
+//        return Collections.singletonList(ATTR_ID);
+//    }
 
     @Override
-    public void visitElement(XmlContext context, Element element) {
+    public void visitElement(@NotNull XmlContext context, Element element) {
         //这个detector只扫描android:id属性,其他属性跳过
         if (!element.hasAttributeNS(ANDROID_URI, ATTR_ID)) return;
 

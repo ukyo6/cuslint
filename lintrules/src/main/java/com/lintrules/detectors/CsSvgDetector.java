@@ -20,7 +20,6 @@ import com.android.tools.lint.detector.api.Implementation;
 import com.android.tools.lint.detector.api.Issue;
 import com.android.tools.lint.detector.api.Lint;
 import com.android.tools.lint.detector.api.Location;
-import com.android.tools.lint.detector.api.Project;
 import com.android.tools.lint.detector.api.ResourceXmlDetector;
 import com.android.tools.lint.detector.api.Scope;
 import com.android.tools.lint.detector.api.Severity;
@@ -47,15 +46,8 @@ import static com.android.SdkConstants.TAG_ANIMATED_VECTOR;
 import static com.android.SdkConstants.TAG_VECTOR;
 
 /**
- * Finds all the vector drawables and checks references to them in layouts.
- *
- * <p>This detector looks for common mistakes related to AppCompat support for vector drawables,
- * that is:
- *
- * <ul>
- *   <li>Using app:srcCompat without useSupportLibrary in build.gradle
- *   <li>Using android:src with useSupportLibrary in build.gradle
- * </ul>
+ * @author hewei
+ * @desc 对FireBase上SVG的一些异常处理, 推荐使用app:srcCompat属性
  */
 public class CsSvgDetector extends ResourceXmlDetector {
 
@@ -63,12 +55,8 @@ public class CsSvgDetector extends ResourceXmlDetector {
     public static final Issue ISSUE =
             Issue.create(
                     "CsSvgDetector",
-                    "Using VectorDrawableCompat",
-                    "To use VectorDrawableCompat, you need to make two modifications to your project. "
-                            + "First, set `android.defaultConfig.vectorDrawables.useSupportLibrary = true` "
-                            + "in your `build.gradle` file, "
-                            + "and second, use `app:srcCompat` instead of `android:src` to refer to vector "
-                            + "drawables.",
+                    "Using srcCompat for vectorDrawable",
+                    "针对firebase上SVG的一些崩溃, 推荐使用`srcCompat`属性",
                     Category.CORRECTNESS,
                     5,
                     Severity.ERROR,
@@ -77,7 +65,7 @@ public class CsSvgDetector extends ResourceXmlDetector {
                             Scope.ALL_RESOURCES_SCOPE,
                             Scope.RESOURCE_FILE_SCOPE))
                     .addMoreInfo(
-                            "http://chris.banes.me/2016/02/25/appcompat-vector/#enabling-the-flag");
+                            "https://www.jianshu.com/p/8c7690070c17");
 
     /** Whether to skip the checks altogether. */
     private boolean mSkipChecks;
@@ -97,10 +85,10 @@ public class CsSvgDetector extends ResourceXmlDetector {
             return;
         }
 
-        if (context.getProject().getMinSdk() >= 24) {
-            mSkipChecks = true;
-            return;
-        }
+//        if (context.getProject().getMinSdk() >= 24) {
+//            mSkipChecks = true;
+//            return;
+//        }
 
         GradleVersion version = context.getProject().getGradleModelVersion();
         if (version == null || version.getMajor() < 2) {
@@ -202,25 +190,7 @@ public class CsSvgDetector extends ResourceXmlDetector {
 
         if (mUseSupportLibrary && ATTR_SRC.equals(name) && isVector.test(resourceUrl.name)) {
             Location location = context.getNameLocation(attribute);
-            String message = "针对firebase上使用SVG的崩溃, 请使用 `app:srcCompat`属性";
-            context.report(ISSUE, attribute, location, message);
-        }
-
-        if (!mUseSupportLibrary
-                && ATTR_SRC_COMPAT.equals(name)
-                && isVector.test(resourceUrl.name)) {
-            Location location = context.getNameLocation(attribute);
-            Project project = context.getProject();
-            String path = "build.gradle";
-            IdeAndroidProject model = project.getGradleProjectModel();
-            if (model != null) {
-                path = model.getName() + File.separator + path;
-            }
-            String message =
-                    "To use VectorDrawableCompat, you need to set "
-                            + "`android.defaultConfig.vectorDrawables.useSupportLibrary = true` in `"
-                            + path
-                            + "`";
+            String message = "针对firebase上使用SVG的崩溃,请直接使用 AppcompatImageView 和`app:srcCompat`属性";
             context.report(ISSUE, attribute, location, message);
         }
     }

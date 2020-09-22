@@ -24,7 +24,6 @@
         app:layout_constraintTop_toBottomOf="@+id/hhha" />
 
     <ImageView
-        android:id="@+id/imageView"
         android:src="@drawable/ic_user_white"
         android:layout_width="80dp"
         android:layout_height="80dp"
@@ -39,6 +38,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/aaa" />
+
+    <android.support.v7.widget.AppCompatImageView
+        app:srcCompat="@drawable/ic_user_white"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/aaa"/>
 
 
 

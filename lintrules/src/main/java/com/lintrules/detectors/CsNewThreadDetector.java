@@ -12,7 +12,6 @@ import com.intellij.psi.PsiMethod;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.uast.UCallExpression;
-
 import java.util.Collections;
 import java.util.List;
 
@@ -22,14 +21,14 @@ import java.util.List;
  *
  */
 @SuppressWarnings("UnstableApiUsage")
-public class NewThreadDetector extends Detector implements SourceCodeScanner {
+public class CsNewThreadDetector extends Detector implements SourceCodeScanner {
 
     public static final Issue ISSUE_NEW_THREAD = Issue.create(
             "NewThread",
             "避免自己创建Thread",
             "请勿直接调用new Thread()，建议使用统一的线程池管理工具类",
             Category.PERFORMANCE, 5, Severity.ERROR,
-            new Implementation(NewThreadDetector.class, Scope.JAVA_FILE_SCOPE));
+            new Implementation(CsNewThreadDetector.class, Scope.JAVA_FILE_SCOPE));
 
     @Override
     public List<String> getApplicableConstructorTypes() {

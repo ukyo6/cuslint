@@ -1,8 +1,8 @@
-package com.james.customlint;
+package com.intsig.customlint;
 
 import android.os.Bundle;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 
 

@@ -9,7 +9,7 @@ import com.android.tools.lint.detector.api.Scope;
 import com.android.tools.lint.detector.api.Severity;
 import com.intellij.psi.PsiMethod;
 
-import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.uast.UCallExpression;
 
 import java.util.Collections;
@@ -22,9 +22,9 @@ import java.util.List;
  *
  */
 @SuppressWarnings("UnstableApiUsage")
-public class MessageObtainDetector extends Detector implements Detector.UastScanner {
+public class CsMsgObtainDetector extends Detector implements Detector.UastScanner {
 
-    private static final Class<? extends Detector> DETECTOR_CLASS = MessageObtainDetector.class;
+    private static final Class<? extends Detector> DETECTOR_CLASS = CsMsgObtainDetector.class;
     private static final EnumSet<Scope> DETECTOR_SCOPE = Scope.JAVA_FILE_SCOPE;
 
     public static final Issue ISSUE = Issue.create(
@@ -38,14 +38,14 @@ public class MessageObtainDetector extends Detector implements Detector.UastScan
     );
 
 
-    @Nullable
+    @NotNull
     @Override
     public List<String> getApplicableConstructorTypes() {
         return Collections.singletonList("android.os.Message");
     }
 
     @Override
-    public void visitConstructor(JavaContext context, UCallExpression node, PsiMethod constructor) {
+    public void visitConstructor(JavaContext context, @NotNull UCallExpression node, @NotNull PsiMethod constructor) {
         context.report(ISSUE, node, context.getLocation(node), "建议调用{handler.obtainMessage} or {Message.Obtain()}获取缓存的message");
     }
 }

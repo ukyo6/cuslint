@@ -1,6 +1,6 @@
-package com.james.customlint;
+package com.intsig.customlint;
 
-import android.support.annotation.LayoutRes;
+import androidx.annotation.LayoutRes;
 
 public class Test {
 

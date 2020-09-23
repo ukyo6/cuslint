@@ -1,6 +1,5 @@
 package com.lintrules.detectors;
 
-import com.android.annotations.NonNull;
 import com.android.tools.lint.detector.api.Category;
 import com.android.tools.lint.detector.api.Detector;
 import com.android.tools.lint.detector.api.Implementation;
@@ -28,17 +27,17 @@ import java.util.List;
  * @desc layoutId命名检查
  */
 @SuppressWarnings("UnstableApiUsage")
-public class LayoutNameDetector extends Detector implements SourceCodeScanner {
+public class CsLayoutNameDetector extends Detector implements SourceCodeScanner {
 
-    private static final Class<? extends Detector> DETECTOR_CLASS = LayoutNameDetector.class;
+    private static final Class<? extends Detector> DETECTOR_CLASS = CsLayoutNameDetector.class;
 
     private static final String ISSUE_ACTIVITY_ID = "ActivityLayoutNamePrefixError";
     private static final String ISSUE_FRAGMENT_ID = "FragmentLayoutNamePrefixError";
 
     public static final Issue ACTIVITY_LAYOUT_NAME_ISSUE = Issue.create(
             ISSUE_ACTIVITY_ID,
-            "You should name an activity-layout file with prefix {activity_}",
-            "You should name an activity-layout file with prefix {activity_}. For example, `activity_function.xml`",
+            "Activity layout请使用前缀{activity_}",
+            "Activity layout请使用前缀{activity_}. 例如 `activity_function.xml`",
             Category.CORRECTNESS, 9, Severity.ERROR,
             new Implementation(DETECTOR_CLASS, Scope.JAVA_FILE_SCOPE)
     );
@@ -46,7 +45,7 @@ public class LayoutNameDetector extends Detector implements SourceCodeScanner {
     public static final Issue FRAGMENT_LAYOUT_NAME_ISSUE = Issue.create(
             ISSUE_FRAGMENT_ID,
             "You should name an fragment-layout file with prefix {fragment_}",
-            "You should name an fragment-layout file with prefix {fragment_}. For example, `fragment_function.xml`;",
+            "Fragment layout请使用前缀 {fragment_}. 例如 `fragment_function.xml`;",
             Category.CORRECTNESS, 9, Severity.ERROR,
             new Implementation(DETECTOR_CLASS, Scope.JAVA_FILE_SCOPE)
     );
@@ -70,11 +69,11 @@ public class LayoutNameDetector extends Detector implements SourceCodeScanner {
 
                 List<UExpression> valueArguments = node.getValueArguments();
                 String layoutString = valueArguments.get(0).toString();
-                if (!isFileStringStartWithPrefix(layoutString, "activity_")) {
+                if (isFileStringStartWithPrefix(layoutString, "activity_")) {
                     context.report(ACTIVITY_LAYOUT_NAME_ISSUE,
                             node,
                             context.getLocation(node),
-                            "You should name an activity-layout file with prefix {activity_}");
+                            "Activity layout请使用前缀{activity_}");
                 }
             }
         } else if ("inflate".equals(name)) {
@@ -83,36 +82,28 @@ public class LayoutNameDetector extends Detector implements SourceCodeScanner {
 
                 List<UExpression> valueArguments = node.getValueArguments();
                 String layoutString = valueArguments.get(0).toString();
-                if (!isFileStringStartWithPrefix(layoutString, "fragment_")) {
+                if (isFileStringStartWithPrefix(layoutString, "fragment_")) {
                     context.report(FRAGMENT_LAYOUT_NAME_ISSUE,
                             node,
                             context.getLocation(node),
-                            "You should name an fragment-layout file with prefix {fragment_}");
+                            "Fragment layout请使用前缀 {fragment_}");
                 }
             }
 
         }
     }
 
-    private boolean isSetContentViewOnThis_ForActivity(@NonNull UCallExpression node) {
+    private boolean isSetContentViewOnThis_ForActivity(@NotNull UCallExpression node) {
         String argOwner = node.getMethodIdentifier().getSourcePsi().getParent().getText();
-        if (argOwner.startsWith("setContentView")
-                || argOwner.startsWith("this.setContentView")) {
-            return true;
-        } else {
-            return false;
-        }
+        return argOwner.startsWith("setContentView")
+                || argOwner.startsWith("this.setContentView");
     }
 
-    private boolean isThisInstanceOfActivity_ForActivity(@NonNull PsiMethod method) {
-        if ("AppCompatActivity".equals(method.getContainingClass().getName())) {
-            return true;
-        } else {
-            return false;
-        }
+    private boolean isThisInstanceOfActivity_ForActivity(@NotNull PsiMethod method) {
+        return "AppCompatActivity".equals(method.getContainingClass().getName());
     }
 
-    private boolean isThisMethodHasLayoutAnnotation_ForActivity(@NonNull PsiMethod method) {
+    private boolean isThisMethodHasLayoutAnnotation_ForActivity(@NotNull PsiMethod method) {
         JvmParameter[] parameters = method.getParameters();
         if (parameters.length < 1) {
             return false;
@@ -120,14 +111,14 @@ public class LayoutNameDetector extends Detector implements SourceCodeScanner {
 
         JvmAnnotation[] annotations = parameters[0].getAnnotations();
         for (JvmAnnotation annotation : annotations) {
-            if ("android.support.annotation.LayoutRes".equals(annotation.getQualifiedName())) {
+            if ("androidx.annotation.LayoutRes".equals(annotation.getQualifiedName())) {
                 return true;
             }
         }
         return false;
     }
 
-    private boolean isInflateCalledInOnCreateView_ForFragment(@NonNull UCallExpression node) {
+    private boolean isInflateCalledInOnCreateView_ForFragment(@NotNull UCallExpression node) {
         UElement surroundingMethod = getSurroundingMethod(node);
         try {
             String resolvedNodeName = ((JavaUMethod) surroundingMethod).getName();
@@ -155,12 +146,6 @@ public class LayoutNameDetector extends Detector implements SourceCodeScanner {
     private boolean isFileStringStartWithPrefix(String layoutFileResourceString, String prefix) {
         int lastDotIndex = layoutFileResourceString.lastIndexOf(".");
         String fileName = layoutFileResourceString.substring(lastDotIndex + 1);
-        if (fileName.startsWith(prefix)) {
-            return true;
-        } else {
-            return false;
-        }
+        return !fileName.startsWith(prefix);
     }
-
-
 }

@@ -2,34 +2,27 @@ package com.lintrules.detectors;
 
 import com.android.tools.lint.detector.api.Category;
 import com.android.tools.lint.detector.api.Detector;
-import com.android.tools.lint.detector.api.Detector;
 import com.android.tools.lint.detector.api.Implementation;
 import com.android.tools.lint.detector.api.Issue;
 import com.android.tools.lint.detector.api.JavaContext;
 import com.android.tools.lint.detector.api.Scope;
 import com.android.tools.lint.detector.api.Severity;
-import com.android.tools.lint.detector.api.XmlContext;
 import com.intellij.psi.PsiClassType;
-import com.intellij.psi.PsiReferenceList;
-import com.intellij.psi.PsiType;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.uast.UAnonymousClass;
 import org.jetbrains.uast.UClass;
-import org.jetbrains.uast.UTypeReferenceExpression;
-import org.w3c.dom.Element;
-
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+
 
 /**
  * @author hewei
  * @desc 序列化内部类检查
  */
 @SuppressWarnings("UnstableApiUsage")
-public class SerializableDetector extends Detector implements Detector.UastScanner {
+public class CsSerialDetector extends Detector implements Detector.UastScanner {
 
     private static final String CLASS_SERIALIZABLE = "java.io.Serializable";
 
@@ -38,7 +31,7 @@ public class SerializableDetector extends Detector implements Detector.UastScann
             "内部类需要实现Serializable接口",
             "内部类需要实现Serializable接口",
             Category.SECURITY, 5, Severity.ERROR,
-            new Implementation(SerializableDetector.class, Scope.JAVA_FILE_SCOPE));
+            new Implementation(CsSerialDetector.class, Scope.JAVA_FILE_SCOPE));
 
     @Nullable
     @Override
@@ -62,22 +55,21 @@ public class SerializableDetector extends Detector implements Detector.UastScann
     private void sortClass(JavaContext context, UClass declaration) {
         for (UClass uClass : declaration.getInnerClasses()) {
             sortClass(context, uClass);
-
-            //判断是否继承了Serializable并提示
-            boolean hasImpled = false;
+            //查找每个子类继承的接口,看他是否集成了序列化接口
+            boolean hasImplement = false;
             for (PsiClassType psiClassType : uClass.getImplementsListTypes()) {
                 if (CLASS_SERIALIZABLE.equals(psiClassType.getCanonicalText())) {
-                    hasImpled = true;
+                    hasImplement = true;
                     break;
                 }
             }
-            if (!hasImpled) {
+
+            if (!hasImplement) {
                 context.report(ISSUE,
                         uClass.getNameIdentifier(),
-                        context.getLocation(uClass.getNameIdentifier()),
+                        context.getNameLocation(uClass),
                         String.format("内部类 `%1$s` 需要实现Serializable接口", uClass.getName()));
             }
-
         }
     }
 }

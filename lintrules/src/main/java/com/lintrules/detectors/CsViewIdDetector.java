@@ -6,41 +6,33 @@ import com.android.tools.lint.detector.api.Issue;
 import com.android.tools.lint.detector.api.LayoutDetector;
 import com.android.tools.lint.detector.api.Scope;
 import com.android.tools.lint.detector.api.Severity;
-import com.android.tools.lint.detector.api.SourceCodeScanner;
 import com.android.tools.lint.detector.api.XmlContext;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 
 import static com.android.SdkConstants.ANDROID_URI;
-import static com.android.SdkConstants.ATTR_ID;
 import static com.android.SdkConstants.BUTTON;
-import static com.android.SdkConstants.CHECKED_TEXT_VIEW;
 import static com.android.SdkConstants.CHECK_BOX;
 import static com.android.SdkConstants.EDIT_TEXT;
 import static com.android.SdkConstants.IMAGE_VIEW;
 import static com.android.SdkConstants.NEW_ID_PREFIX;
-import static com.android.SdkConstants.RADIO_BUTTON;
-import static com.android.SdkConstants.SWITCH;
 import static com.android.SdkConstants.TEXT_VIEW;
-import static com.android.SdkConstants.TOGGLE_BUTTON;
 /**
  * @author hewei
  * @desc ViewIdName的命名建议使用 view的缩写_xxx,例如tv_username
  *
  */
 @SuppressWarnings("UnstableApiUsage")
-public class ViewIdCorrectnessDetector extends LayoutDetector {
+public class CsViewIdDetector extends LayoutDetector {
 
     private static final String ATTR_ID = "id";
 
-    public static final Implementation IMPLEMENTATION = new Implementation(ViewIdCorrectnessDetector.class, Scope.RESOURCE_FILE_SCOPE);
+    public static final Implementation IMPLEMENTATION = new Implementation(CsViewIdDetector.class, Scope.RESOURCE_FILE_SCOPE);
 
     public static final Issue ISSUE = Issue.create(
             "ViewIdCorrectness",

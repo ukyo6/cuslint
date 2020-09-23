@@ -1,4 +1,4 @@
-package com.james.customlint;
+package com.intsig.customlint;
 
 import org.junit.Test;
 

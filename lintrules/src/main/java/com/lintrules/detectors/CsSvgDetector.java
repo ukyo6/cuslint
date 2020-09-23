@@ -1,8 +1,6 @@
 package com.lintrules.detectors;
 
 import com.android.SdkConstants;
-import com.android.annotations.NonNull;
-import com.android.annotations.Nullable;
 import com.android.builder.model.Variant;
 import com.android.ide.common.gradle.model.IdeAndroidProject;
 import com.android.ide.common.rendering.api.ResourceNamespace;
@@ -28,6 +26,8 @@ import com.android.utils.XmlUtils;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Sets;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
 
@@ -37,7 +37,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
-
 import static com.android.SdkConstants.ANDROID_URI;
 import static com.android.SdkConstants.ATTR_SRC;
 import static com.android.SdkConstants.ATTR_SRC_COMPAT;
@@ -49,6 +48,7 @@ import static com.android.SdkConstants.TAG_VECTOR;
  * @author hewei
  * @desc 对FireBase上SVG的一些异常处理, 推荐使用app:srcCompat属性
  */
+@SuppressWarnings("UnstableApiUsage")
 public class CsSvgDetector extends ResourceXmlDetector {
 
     /** The main issue discovered by this detector */
@@ -77,7 +77,7 @@ public class CsSvgDetector extends ResourceXmlDetector {
     private boolean mUseSupportLibrary;
 
     @Override
-    public void beforeCheckRootProject(@NonNull Context context) {
+    public void beforeCheckRootProject(@NotNull Context context) {
         IdeAndroidProject model = context.getProject().getGradleProjectModel();
 
         if (model == null) {
@@ -85,6 +85,7 @@ public class CsSvgDetector extends ResourceXmlDetector {
             return;
         }
 
+        //在网上搜到的信息是: 24以下使用渐变SVG + src会崩溃
 //        if (context.getProject().getMinSdk() >= 24) {
 //            mSkipChecks = true;
 //            return;
@@ -110,7 +111,7 @@ public class CsSvgDetector extends ResourceXmlDetector {
     }
 
     @Override
-    public boolean appliesTo(@NonNull ResourceFolderType folderType) {
+    public boolean appliesTo(@NotNull ResourceFolderType folderType) {
         //noinspection SimplifiableIfStatement
         if (mSkipChecks) {
             return false;
@@ -125,7 +126,7 @@ public class CsSvgDetector extends ResourceXmlDetector {
      * #visitAttribute(XmlContext, Attr)} on every attribute.
      */
     @Override
-    public void visitElement(@NonNull XmlContext context, @NonNull Element element) {
+    public void visitElement(@NotNull XmlContext context, @NotNull Element element) {
         if (mSkipChecks) {
             return;
         }
@@ -146,7 +147,7 @@ public class CsSvgDetector extends ResourceXmlDetector {
     }
 
     @Override
-    public void visitAttribute(@NonNull XmlContext context, @NonNull Attr attribute) {
+    public void visitAttribute(@NotNull XmlContext context, @NotNull Attr attribute) {
         if (mSkipChecks) {
             return;
         }
@@ -196,7 +197,7 @@ public class CsSvgDetector extends ResourceXmlDetector {
     }
 
     private static boolean checkResourceRepository(
-            @NonNull ResourceRepository resources, @NonNull String name) {
+            @NotNull ResourceRepository resources, @NotNull String name) {
         List<ResourceItem> items =
                 resources.getResources(ResourceNamespace.TODO(), ResourceType.DRAWABLE, name);
 

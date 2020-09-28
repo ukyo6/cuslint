@@ -1,8 +1,9 @@
 apply plugin: 'java'
+apply plugin: 'maven'
 
 dependencies {
-    compileOnly 'com.android.tools.lint:lint-api:26.2.0'
-    compileOnly 'com.android.tools.lint:lint-checks:26.2.0'
+    compileOnly 'com.android.tools.lint:lint-api:27.0.1'
+    compileOnly 'com.android.tools.lint:lint-checks:27.0.1'
 }
 
 jar {

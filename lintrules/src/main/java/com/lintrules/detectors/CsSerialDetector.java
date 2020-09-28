@@ -53,6 +53,10 @@ public class CsSerialDetector extends Detector implements Detector.UastScanner {
     }
 
     private void sortClass(JavaContext context, UClass declaration) {
+        UClass[] innerClasses = declaration.getInnerClasses();
+        if(innerClasses.length == 0){
+            return;
+        }
         for (UClass uClass : declaration.getInnerClasses()) {
             sortClass(context, uClass);
             //查找每个子类继承的接口,看他是否集成了序列化接口

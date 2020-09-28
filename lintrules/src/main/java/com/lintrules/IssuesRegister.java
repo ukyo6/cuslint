@@ -3,6 +3,8 @@ package com.lintrules;
 import com.android.tools.lint.client.api.IssueRegistry;
 import com.android.tools.lint.detector.api.ApiKt;
 import com.android.tools.lint.detector.api.Issue;
+import com.lintrules.detectors.CsAppcompatActivityDetector;
+import com.lintrules.detectors.CsDialogFragmentDetector;
 import com.lintrules.detectors.CsSvgDetector;
 import com.lintrules.detectors.CsLayoutNameDetector;
 import com.lintrules.detectors.CsMsgObtainDetector;
@@ -34,6 +36,8 @@ public class IssuesRegister extends IssueRegistry {
             add(CsLayoutNameDetector.FRAGMENT_LAYOUT_NAME_ISSUE);
             add(CsSerialDetector.ISSUE);
             add(CsSvgDetector.ISSUE);
+            add(CsAppcompatActivityDetector.ISSUE);
+            add(CsDialogFragmentDetector.ISSUE);
         }};
     }
 

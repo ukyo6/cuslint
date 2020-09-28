@@ -56,9 +56,8 @@ public class CsLayoutNameDetector extends Detector implements SourceCodeScanner 
         return Arrays.asList("setContentView", "inflate");
     }
 
-
     @Override
-    public void visitMethod(@NotNull JavaContext context, @NotNull UCallExpression node, PsiMethod method) {
+    public void visitMethodCall(@NotNull JavaContext context, @NotNull UCallExpression node, @NotNull PsiMethod method) {
         String name = method.getName();
 
         if ("setContentView".equals(name)) {
